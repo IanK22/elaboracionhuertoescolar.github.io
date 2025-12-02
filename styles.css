@@ -1,0 +1,257 @@
+body {
+    background: linear-gradient(135deg, #232946 0%, #1a1a2e 60%, #0f3460 100%);
+    color: #e0dede;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid #ffd700; /* dorado */
+    margin: 1em 0;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 1em;
+    position: relative; /* permitir posicionamiento absoluto del panel dentro */
+    padding: 18px 12px;
+    min-height: 72px;
+    box-sizing: border-box;
+}
+
+.main-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.button-container .search-button {
+    margin-left: auto;
+}
+
+.button-container button {
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.big-button {
+    padding: 16px 32px;
+    font-size: 1.2em;
+    border-radius: 0;
+    border: 2px solid #ffd700;
+    background: #232946;
+    color: #ffd700;
+    cursor: pointer;
+}
+
+.search-button {
+    padding: 16px 32px;
+    font-size: 1.2em;
+    border-radius: 20px;
+    border: 2px solid #ffd700;
+    background: #232946;
+    color: #ffd700;
+    cursor: pointer;
+}
+
+.limited-width {
+    max-width: 80%; /* Límite de ancho para el contenido principal */
+    margin: 0 auto;
+}
+
+.benefits-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.benefits-text {
+    flex: 1;           /* El texto ocupa 1 parte del espacio */
+    max-width: 50%;    /* Limita el texto a un 50% del contenedor */
+    text-align: left;
+    padding-right: 16px; /* Espacio adicional a la derecha para no sobrepasar la imagen */
+}
+
+.benefits-img-container {
+    flex: 1;           /* La imagen ocupa 1 parte del espacio */
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    margin-top: 0.5em; /* Añadir un pequeño margen arriba */
+    margin-bottom: 0.5em; /* Añadir un pequeño margen abajo */
+}
+
+.benefits-img {
+    width: 100%;        /* Se ajusta al contenedor */
+    height: auto;       /* Mantiene proporción */
+    max-width: 400px;   /* Tamaño máximo recomendado */
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    object-fit: cover;
+}
+
+/* efectos interactivos para botones */
+.button-container .big-button,
+.button-container .search-button {
+    transition: box-shadow 200ms ease, transform 120ms ease, background-color 200ms ease;
+    will-change: transform, box-shadow;
+    outline: none;
+}
+
+/* hover / focus (visual de "iluminado" y elevación) */
+.big-button:hover,
+.big-button:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255,215,0,0.12), 0 0 10px rgba(255,215,0,0.18);
+    background: linear-gradient(180deg, #2b2f54, #232946);
+    color: #fff;
+}
+
+.search-button:hover,
+.search-button:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,173,181,0.12), 0 0 10px rgba(0,173,181,0.18);
+    background: linear-gradient(180deg, #123244, #0f3460);
+    color: #e6ffff;
+}
+
+/* estado activo (clic) */
+.big-button:active,
+.search-button:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+
+/* anillo visible para navegación por teclado (accesible) */
+.big-button:focus-visible {
+    box-shadow: 0 0 0 5px rgba(255,215,0,0.12), 0 12px 30px rgba(255,215,0,0.08);
+}
+
+.search-button:focus-visible {
+    box-shadow: 0 0 0 5px rgba(0,173,181,0.12), 0 12px 30px rgba(0,173,181,0.08);
+}
+
+/* asegurar scrollbar estable para evitar desplazamientos horizontales al cambiar contenido */
+html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable; /* soporte adicional en navegadores que lo implementen */
+}
+
+/* panel de búsqueda: JS posicionará left/top/width para colocarlo a la izquierda del botón */
+.search-panel {
+    position: absolute;
+    /* top/left/width se fijarán desde JS */
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #232946;
+    border: 2px solid rgba(255,215,0,0.95);
+    color: #ffd700;
+    z-index: 40;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55), 0 0 18px rgba(255,215,0,0.03) inset;
+    transition: opacity 180ms ease, transform 160ms ease, visibility 180ms;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    box-sizing: border-box;
+}
+
+/* oculto sin afectar layout; animación sutil */
+.search-panel.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px) scale(0.98);
+}
+
+/* input dentro del cuadro: contraste claro sobre fondo oscuro */
+.search-panel input[type="text"] {
+    flex: 1 1 auto;
+    min-width: 40px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,215,0,0.08);
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-size: 0.98rem;
+    outline: none;
+}
+
+/* mostrar y estilizar los botones pequeños dentro del cuadro */
+.search-panel .small-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: transform 120ms ease, box-shadow 160ms ease;
+}
+
+/* botón Buscar: estilo acorde al botón de búsqueda (acento turquesa) */
+#search-go {
+    background: #232946;
+    border: 2px solid #00adb5;
+    color: #00adb5;
+}
+#search-go:hover, #search-go:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0,173,181,0.08), 0 0 10px rgba(0,173,181,0.12);
+}
+
+/* botón Cerrar: estilo acorde al botón principal (dorado) */
+#search-close {
+    background: #232946;
+    border: 2px solid #ffd700;
+    color: #ffd700;
+}
+#search-close:hover, #search-close:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(255,215,0,0.08), 0 0 10px rgba(255,215,0,0.12);
+}
+
+/* placeholder más visible */
+.search-panel input[type="text"]::placeholder {
+    color: rgba(230,230,230,0.6);
+}
+
+/* foco visual del cuadro completo */
+.search-panel:focus-within {
+    box-shadow: 0 14px 36px rgba(0,0,0,0.55), 0 0 28px rgba(255,215,0,0.08);
+}
+
+/* pequeño ajuste responsivo: reducir ancho en pantallas muy pequeñas */
+@media (max-width: 420px) {
+    .search-panel {
+        width: calc(100% - 40px);
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* resaltado de búsqueda (por si no está añadido) */
+mark.highlight {
+    background: rgba(255, 215, 0, 0.28);
+    color: #111;
+    padding: 0 4px;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25) inset;
+}
